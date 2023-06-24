@@ -1,16 +1,13 @@
-# Vue3レクチャーpart2
-## レクチャー準備
+# Vue3レクチャーpart3
+## HTMLとless
 ### 概要
-レクチャーを行うにあたって以下を準備
-- ルート画面をレクチャー用に編集
-- レクチャー用のpageコンポーネントを作成
-- ルーティング記載
-- normalize.cssの読み込み
-- less環境構築
+- HTMLでユーザー情報登録画面を作成
+- lessを用いてスタイルを整える
 
-### normalize.cssのインストール
-npm install -D normalize.css
-
-### less環境作成
-[参考URL](https://zukucode.com/2017/04/vue-less-webpack.html)
-npm install --save-dev less less-loader style-loader css-loader
+### 参考サイト
+- [src参考](https://brightful.jp/blog/programming/vue3-step-form/)
+- [html-imputのmdn](https://developer.mozilla.org/ja/docs/Web/HTML/Element/input)
+- [html-textareaのmdn](https://developer.mozilla.org/ja/docs/Web/HTML/Element/textarea)
+- [1つだけ選択できるラジオボタンにするには？](https://webcreatetips.com/coding/3836/)
+- [フッターを固定させる方法](https://webukatu.com/wordpress/blog/11208/)
+- [css-box-shadow-generator](https://front-end-tools.com/generateboxshadow/)
