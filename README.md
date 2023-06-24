@@ -1,5 +1,5 @@
 # Vue3レクチャーpart4
-## HTMLとless
+## Vueの基本構造
 ### 概要
 - Vueの基本構造を覚えながらJavaScriptの記法を覚える
 - v-modelでフォームの内容を相互データバインディング
