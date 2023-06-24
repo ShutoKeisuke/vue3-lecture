@@ -6,25 +6,25 @@
     <div class="form-container">
       <div class="form-content">
         <label for="lastName" class="form-label">名字</label>
-        <input id="lastName" type="input" class="form-input">
+        <input id="lastName" type="input" class="form-input" v-model="form.lastName">
       </div>
       <div class="form-content">
         <label for="firstName" class="form-label">名前</label>
-        <input id="firstName" type="input" class="form-input">
+        <input id="firstName" type="input" class="form-input" v-model="form.firstName">
       </div>
       <div class="form-content radio">
         <label class="form-label">性別</label>
         <div class="form-radio-group">
           <label for="sexMan" class="form-radio-label">男</label>
-          <input id="sexMan" type="radio" name="sex" class="form-radio-input" value="1">
+          <input id="sexMan" type="radio" name="sex" class="form-radio-input" value="1" v-model="form.sex">
         </div>
         <div class="form-radio-group">
           <label for="sexWoman" class="form-radio-label">女</label>
-          <input id="sexWoman" type="radio" name="sex" class="form-radio-input" value="2">
+          <input id="sexWoman" type="radio" name="sex" class="form-radio-input" value="2" v-model="form.sex">
         </div>
         <div class="form-radio-group">
           <label for="sexPrivate" class="form-radio-label">設定しない</label>
-          <input id="sexPrivate" type="radio" name="sex" class="form-radio-input" value="0">
+          <input id="sexPrivate" type="radio" name="sex" class="form-radio-input" value="0" v-model="form.sex">
         </div>
       </div>
       <div class="form-content checkbox">
@@ -35,7 +35,7 @@
               <label for="purpose1" class="form-checkbox-label">起業する予定がある</label>
             </div>
             <div class="form-checkbox-input-container">
-              <input id="purpose1" type="checkbox" class="form-checkbox-input">
+              <input id="purpose1" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose1">
             </div>
           </div>
           <div class="form-checkbox-item">
@@ -43,7 +43,7 @@
               <label for="purpose2" class="form-checkbox-label">起業に興味がある</label>
             </div>
             <div class="form-checkbox-input-container">
-              <input id="purpose2" type="checkbox" class="form-checkbox-input">
+              <input id="purpose2" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose2">
             </div>
           </div>
           <div class="form-checkbox-item">
@@ -51,7 +51,7 @@
               <label for="purpose3" class="form-checkbox-label">なんとなく</label>
             </div>
             <div class="form-checkbox-input-container">
-              <input id="purpose3" type="checkbox" class="form-checkbox-input">
+              <input id="purpose3" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose3">
             </div>
           </div>
         </div>
@@ -59,17 +59,34 @@
       <div class="form-content text-area">
         <label for="profile" class="form-label">プロフィール</label>
         <div class="form-text-area-container">
-          <textarea id="profile" cols="60" rows="10" class="form-text-area"></textarea>
+          <textarea id="profile" v-bind:cols="vBindCols" :rows="vBindRows" class="form-text-area" v-model="form.profile"></textarea>
         </div>
       </div>
     </div>
-    <div class="test"></div>
+    <div class="test">{{ $data }}</div>
+    <div>フルネーム: {{ fullName }}</div>
+    <div>
+      <label>watchText</label>
+      <input type="text" v-model="watchText">
+    </div>
+    <div>
+      <div>
+        <p>v-ifテスト</p>
+      </div>
+      <div>
+        <input type="checkbox" v-model="vIfFlg">
+      </div>
+      <div v-if="vIfFlg">
+        v-ifで制御しています
+      </div>
+    </div>
+    <div v-for="item in vForList" :key="item">{{ item }}</div>
     <div class="footer-from-btn">
       <div class="button-container clear">
-        <button class="btn clear">クリア</button>
+        <button class="btn clear" v-on:click="onClear">クリア</button>
       </div>
       <div class="button-container submit">
-        <button class="btn submit">登録</button>
+        <button class="btn submit" @click="onSubmit">登録</button>
       </div>
     </div>
   </div>
@@ -77,13 +94,75 @@
 
 <script>
 export default {
-  name: 'ReserveUserInfo'
+  name: 'ReserveUserInfo',
+  data: () => {
+    return {
+      form: {
+        lastName: '',
+        firstName: '',
+        sex: 0,
+        purpose: {
+          purpose1: false,
+          purpose2: false,
+          purpose3: false
+        },
+        profilvBindRowse: ''
+      },
+      vBindRows: 5,
+      vBindCols: 30,
+      watchText: '',
+      vIfFlg: true,
+      vForList: []
+    }
+  },
+  mounted() {
+    this.vForList = ['item1', 'item2', 'item3']
+  },
+  computed: {
+    fullName: function () {
+      return this.form.lastName + this.form.firstName
+    }
+  },
+  watch: {
+    watchText: function(newVal, oldVal) {
+      console.log(`newVal: ${newVal}`);
+      console.log(`oldVal: ${oldVal}`);
+    },
+    form: {
+      handler: (newVal, oldVal) => {
+        console.log('formの値が変更されました');
+      },
+      deep: true
+    }
+  },
+  methods: {
+    /**
+     * クリアボタン押下
+     */
+    onClear() {
+      this.form.lastName = ''
+      this.form.firstName = ''
+      this.form.sex = 0
+      this.form.purpose.purpose1 = false
+      this.form.purpose.purpose2 = false
+      this.form.purpose.purpose3 = false
+      this.form.profile = ''
+    },
+    /**
+     * 登録ボタン押下
+     */
+    onSubmit() {
+      console.log('登録ボタンが押下されました')
+      console.log(this.form)
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .reserve-user-info {
   width: 100vw;
+  padding-bottom: 64px;
 
   .title {
     width: 90vw;
