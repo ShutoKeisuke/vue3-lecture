@@ -1,18 +1,56 @@
-# Vue3レクチャーpart4
+# Vue3レクチャーpart5
 ## Vueの基本構造
 ### 概要
-- Vueの基本構造を覚えながらJavaScriptの記法を覚える
-- v-modelでフォームの内容を相互データバインディング
-- マスタッシュ構文
-- v-onについて
-- computedについて
-- watchについて
-- v-ifについて
-- v-bindについて
-- v-forについて
-- ライフサイクル(mouonted)について
+- コンポーネントを作ろう
+- propsの紹介
+- emitの紹介
+
+### レクチャー手順
+1. コンポーネントの説明(実装はしない)
+2. コンポーネント確認の為のページを作成しよう
+    1. components/pages/testPage諸々を作成
+    2. routerを作成
+    3. App.vueにリンクを追加
+3. components/atoms/inputText諸々を作成
+4. testPageにInputTextを表示させよう
+5. v-modelでdataと相互データバインディングする
+6. 子コンポーネントに値を渡そう(props)
+    1. propsをv-modelで相互データバインディングすることはできない
+    2. InputTextでユーザーの入力(値の変更)を検知して親コンポーネントに値を返してあげればいい
+    3. watchを使ってあげればよい
+    4. inputValueのwatchだけでは初期表示が検知できない
+        1. 初期表示時にinputValueを親から受け取った値で更新してあげればよい
+7. 子コンポーネントから親コンポーネントに値を渡す
+    1. emitを使う
+    2. emitでネイティブイベントを定義した場合、emitsにイベント定義していないと両方呼ばれてしまう
+    3. 試しにemit('input')をコメントアウト下としても$eventを引数に取るinputが発火していることが確認できる
+    4. emitsに'input'イベントを登録することで期待通りの動きをしてくれる
+8. 登録画面に組み込む
+9. InputTextにスタイルを当てよう
+10. 最後にコンポーネントで分けるメリットを説明
+    1. 使いまわすことができる
+        1. バグを修正する箇所が限定的
+    2. IFさえ分かればブラックボックスで使える
+    3. 他のコンポーネントと組み合わせることができる(次回ラジオボタンで分かる)
+    4. 実務よりですがコンポーネント単位でテストができる
+    5. ユーザビリティが向上する(同一アプリ内で同じものを使うため視覚的に使い方が分かる)
 
 ### 参考サイト
-- [v-bind](https://codelikes.com/vue-v-bind/)
-- [v-for](https://codelikes.com/vue-js-v-for/)
-- [watch](https://qiita.com/smkhkc/items/d5e1bc5580a62d060516)
+- [emit](https://v3-migration.vuejs.org/ja/breaking-changes/emits-option.html)
+  - Vue3からコンポーネント毎に発行可能なイベントが定義できる
+  - emitsにイベント定義することは推奨
+    - 定義を行っていないと、定義したemitがネイティブイベント(最初から定義されているイベント)とかぶっている場合、emit発火時に2回イベントが発火してまう
+
+```js
+// 子コンポーネント
+emits: ['input'] // emitsが定義されているかいないか
+this.$emit('input', value)
+
+// 親コンポーネント
+@input="onInput"
+
+onInput(value) {
+  // 子コンポーネントで定義したemitからは引数にvalueが来る
+  // ネイティブイベントも発火するのでそちらからは引数に$eventが来る
+}
+```

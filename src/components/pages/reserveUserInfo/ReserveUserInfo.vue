@@ -6,11 +6,19 @@
     <div class="form-container">
       <div class="form-content">
         <label for="lastName" class="form-label">名字</label>
-        <input id="lastName" type="input" class="form-input" v-model="form.lastName">
+        <InputText
+          class="form-input"
+          :value="form.lastName"
+          @input="onInputLastName"
+        />
       </div>
       <div class="form-content">
         <label for="firstName" class="form-label">名前</label>
-        <input id="firstName" type="input" class="form-input" v-model="form.firstName">
+        <InputText
+          class="form-input"
+          :value="form.firstName"
+          @input="onInputFirstName"
+        />
       </div>
       <div class="form-content radio">
         <label class="form-label">性別</label>
@@ -93,8 +101,11 @@
 </template>
 
 <script>
+import InputText from '@/components/atoms/inputText';
+
 export default {
   name: 'ReserveUserInfo',
+  components: {InputText},
   data: () => {
     return {
       form: {
@@ -136,6 +147,22 @@ export default {
     }
   },
   methods: {
+    /**
+     * 名字入力時
+     *
+     * @param {String} lastName 名字
+     */
+    onInputLastName(lastName) {
+      this.form.lastName = lastName;
+    },
+    /**
+     * 名字入力時
+     *
+     * @param {String} firstName 名字
+     */
+    onInputFirstName(firstName) {
+      this.form.firstName = firstName;
+    },
     /**
      * クリアボタン押下
      */
