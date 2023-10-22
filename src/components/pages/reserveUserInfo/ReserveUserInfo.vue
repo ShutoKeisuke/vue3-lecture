@@ -21,54 +21,31 @@
         />
       </div>
       <div class="form-content radio">
-        <label class="form-label">性別</label>
-        <div class="form-radio-group">
-          <label for="sexMan" class="form-radio-label">男</label>
-          <input id="sexMan" type="radio" name="sex" class="form-radio-input" value="1" v-model="form.sex">
-        </div>
-        <div class="form-radio-group">
-          <label for="sexWoman" class="form-radio-label">女</label>
-          <input id="sexWoman" type="radio" name="sex" class="form-radio-input" value="2" v-model="form.sex">
-        </div>
-        <div class="form-radio-group">
-          <label for="sexPrivate" class="form-radio-label">設定しない</label>
-          <input id="sexPrivate" type="radio" name="sex" class="form-radio-input" value="0" v-model="form.sex">
-        </div>
+        <RadioGroup
+          title="性別"
+          name="sex"
+          :radio-value="form.sex"
+          :radio-list="radioList"
+          @change="onChangeRadioGroup"
+        />
       </div>
       <div class="form-content checkbox">
         <label class="form-label">利用目的(複数選択可)</label>
-        <div class="form-checkbox-group">
-          <div class="form-checkbox-item">
-            <div class="form-checkbox-label-container">
-              <label for="purpose1" class="form-checkbox-label">起業する予定がある</label>
-            </div>
-            <div class="form-checkbox-input-container">
-              <input id="purpose1" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose1">
-            </div>
-          </div>
-          <div class="form-checkbox-item">
-            <div class="form-checkbox-label-container">
-              <label for="purpose2" class="form-checkbox-label">起業に興味がある</label>
-            </div>
-            <div class="form-checkbox-input-container">
-              <input id="purpose2" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose2">
-            </div>
-          </div>
-          <div class="form-checkbox-item">
-            <div class="form-checkbox-label-container">
-              <label for="purpose3" class="form-checkbox-label">なんとなく</label>
-            </div>
-            <div class="form-checkbox-input-container">
-              <input id="purpose3" type="checkbox" class="form-checkbox-input" v-model="form.purpose.purpose3">
-            </div>
-          </div>
-        </div>
+        <CheckboxGroup
+          class="checkbox-group"
+          :checkbox-list="form.purpose"
+          @change="onChangeCheckboxGroup"
+        />
       </div>
       <div class="form-content text-area">
         <label for="profile" class="form-label">プロフィール</label>
-        <div class="form-text-area-container">
-          <textarea id="profile" v-bind:cols="vBindCols" :rows="vBindRows" class="form-text-area" v-model="form.profile"></textarea>
-        </div>
+        <InputTextarea
+          class="input-textarea"
+          :value="form.profile"
+          :cols="20"
+          :rows="3"
+          @input="onInputTextarea"
+        />
       </div>
     </div>
     <div class="test">{{ $data }}</div>
@@ -101,24 +78,59 @@
 </template>
 
 <script>
+import map from 'lodash/map'
+import isEmpty from 'lodash/isEmpty'
+
 import InputText from '@/components/atoms/inputText';
+import RadioGroup from '@/components/atoms/radioGroup';
+import CheckboxGroup from '@/components/molecules/checkboxGroup';
+import InputTextarea from '@/components/atoms/inputTextarea';
 
 export default {
   name: 'ReserveUserInfo',
-  components: {InputText},
+  components: {InputText, RadioGroup, CheckboxGroup, InputTextarea},
   data: () => {
     return {
       form: {
         lastName: '',
         firstName: '',
         sex: 0,
-        purpose: {
-          purpose1: false,
-          purpose2: false,
-          purpose3: false
-        },
+        purpose: [
+          {
+            value: true,
+            label: '起業する予定がある',
+            name: 'purpose1'
+          },
+          {
+            value: false,
+            label: '起業に興味がある',
+            name: 'purpose2'
+          },
+          {
+            value: true,
+            label: 'なんとなく',
+            name: 'purpose3'
+          }
+        ],
         profilvBindRowse: ''
       },
+      radioList: [
+        {
+          name: 'sexMan',
+          label: '男',
+          value: 1
+        },
+        {
+          name: 'sexWoman',
+          label: '女',
+          value: 2
+        },
+        {
+          name: 'sexPrivate',
+          label: '設定しない',
+          value: 0
+        }
+      ],
       vBindRows: 5,
       vBindCols: 30,
       watchText: '',
@@ -132,6 +144,16 @@ export default {
   computed: {
     fullName: function () {
       return this.form.lastName + this.form.firstName
+    },
+    CheckboxGroupList() {
+      if (isEmpty(this.form.purpose)) return [];
+      return map(this.form.purpose, (value, key) => {
+        return {
+          value,
+          label: key,
+          name: key
+        }
+      });
     }
   },
   watch: {
@@ -164,15 +186,39 @@ export default {
       this.form.firstName = firstName;
     },
     /**
+     * チェックボックス変更イベントハンドラ
+     *
+     * @param {Array} checkboxList 変更後のチェックボックスリスト
+     */
+    onChangeCheckboxGroup({ checkboxList }) {
+      this.form.purpose = checkboxList;
+    },
+    /**
+     * ラジオボタン変更イベントハンドラ
+     *
+     * @param {String|Number} radioValue 変更後のラジオボタンの値
+     */
+    onChangeRadioGroup(radioValue) {
+      this.form.sex = radioValue
+    },
+    /**
+     * テキストエリア変更イベントハンドラ
+     *
+     * @param {String} testareaStr 変更後のテキストエリアの文字列
+     */
+    onInputTextarea(testareaStr) {
+      this.form.profile = testareaStr;
+    },
+    /**
      * クリアボタン押下
      */
     onClear() {
       this.form.lastName = ''
       this.form.firstName = ''
       this.form.sex = 0
-      this.form.purpose.purpose1 = false
-      this.form.purpose.purpose2 = false
-      this.form.purpose.purpose3 = false
+      this.form.purpose[0].value = false
+      this.form.purpose[1].value = false
+      this.form.purpose[2].value = false
       this.form.profile = ''
     },
     /**
@@ -237,29 +283,13 @@ export default {
       }
 
       &.checkbox {
-        .form-checkbox-group {
+        .checkbox-group {
           margin-top: 8px;
-          display: flex;
-
-          .form-checkbox-item {
-            margin-right: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            &:last-child {
-              margin-right: 0;
-            }
-
-            .form-checkbox-label-container {
-              margin-bottom: 4px;
-            }
-          }
         }
       }
 
       &.text-area {
-        .form-text-area-container {
+        .input-textarea {
           margin-top: 8px;
         }
       }

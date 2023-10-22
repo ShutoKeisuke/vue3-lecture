@@ -1,17 +1,29 @@
 <template>
-  <input
-    type="text"
-    v-model="inputValue"
-  />
+  <div class="textarea">
+    <textarea
+      type="text"
+      v-model="inputValue"
+      :cols="cols"
+      :rows="rows"
+    />
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'InputText',
+  name: 'InputTextarea',
   props: {
     value: {
       type: String,
       default: ''
+    },
+    cols: {
+      type: Number,
+      default: 30
+    },
+    rows: {
+      type: Number,
+      default: 5
     }
   },
   // ここでイベントを定義しないとネイティブイベントも発火してしまう

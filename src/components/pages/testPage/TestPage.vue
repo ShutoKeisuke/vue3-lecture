@@ -1,30 +1,56 @@
 <template>
   <div>
-    <InputText
+    <Checkbox
       :value="valueTest"
-      @input="onInput"
+      :label="'ラベル'"
+      :name="'test-checkbox'"
+      @change="onChange"
+    />
+    <CheckboxGroup
+      :checkbox-list="checkboxGroupTest"
+      @change="onChangeGroup"
     />
     {{ valueTest }}
+    {{ checkboxGroupTest }}
   </div>
 </template>
 
 <script>
 // vite.config.jsのresolve.aliasに定義されている
-import InputText from '@/components/atoms/inputText';
+import Checkbox from '@/components/atoms/checkbox';
+import CheckboxGroup from '@/components/molecules/checkboxGroup';
 
 export default {
   name: 'TestPage',
-  components: { InputText },
+  components: { Checkbox, CheckboxGroup },
   data() {
     return {
-      valueTest: 'test'
+      valueTest: true,
+      checkboxGroupTest: [
+        {
+          value: true,
+          label: 'ラベル1',
+          name: 'name1'
+        },
+        {
+          value: false,
+          label: 'ラベル2',
+          name: 'name2'
+        },
+        {
+          value: true,
+          label: 'ラベル3',
+          name: 'name3'
+        }
+      ]
     }
   },
   methods: {
-    onInput(inputValue) {
-      console.log(`emit発火確認: ${inputValue}`);
-      console.log(inputValue);
-      this.valueTest = inputValue;
+    onChange(value) {
+      this.valueTest = value;
+    },
+    onChangeGroup({ checkboxList }) {
+      this.checkboxGroupTest = checkboxList;
     }
   }
 }
