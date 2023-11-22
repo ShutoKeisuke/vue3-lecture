@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from "axios";
 // vite.config.jsのresolve.aliasに定義されている
 import Checkbox from '@/components/atoms/checkbox';
 import CheckboxGroup from '@/components/molecules/checkboxGroup';
@@ -44,6 +45,10 @@ export default {
         }
       ]
     }
+  },
+  async mounted() {
+    const result = await axios.get('http://localhost:5173/todoInfo/read');
+    console.log(result);
   },
   methods: {
     onChange(value) {
