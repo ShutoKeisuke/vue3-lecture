@@ -4,6 +4,7 @@
       <nav>
         <RouterLink to="/">Top</RouterLink>
         <RouterLink to="/reserveUserInfo">reserveUserInfo</RouterLink>
+        <RouterLink to="/clientInfo?mode=1">clientInfoRead</RouterLink>
         <RouterLink to="/test">testPage</RouterLink>
       </nav>
     </header>

@@ -140,7 +140,6 @@ export default {
   },
   mounted() {
     this.vForList = ['item1', 'item2', 'item3']
-    console.log('store', this.$store);
   },
   computed: {
     fullName: function () {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import ReserveUserInfo from '../components/pages/reserveUserInfo'
+import ClientInfo from '../components/pages/clientInfo'
 import TestPage from '../components/pages/testPage'
 
 const router = createRouter({
@@ -9,6 +10,11 @@ const router = createRouter({
       path: '/reserveUserInfo',
       name: 'reserveUserInfo',
       component: ReserveUserInfo
+    },
+    {
+      path: '/clientInfo',
+      name: 'ClientInfo',
+      component: ClientInfo
     },
     {
       path: '/test',
