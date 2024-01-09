@@ -31,6 +31,7 @@
     3. main.jsに追記
 3. vue-dev-toolsインストール
 4. vuex疎通確認
+    1. reserveUserInfoのmounted時にコンソールでstoreを見る
 5. MSWのインストール
     1. ~~npm install msw --save-dev~~pakage.jsonのdevDependenciesに"msw": "0.33.2",を追加し、npm installを実行
     2. npx msw init public/ --save
@@ -48,7 +49,16 @@
 8. mswの実行処理作成
     1. main.jsに追記(環境変数を参照し、developの場合のみ)
 9. axiosのインストール
-    1. npm install axios
+    1. npm install axios(package.jsonにバージョン指定して記載してもいいかも)
+    2. axiosの使い方をTestPage.vueで試す(mswの動作確認)
+10. clientInfoを作成しよう
+    1. ClientInfo.vueを作成
+        1. App.vueにroutingを追記
+        2. router/index.jsにルーティング追加
+    2. clientInfo用のapiMock作成
+    3. clientInfo用のapi呼び出し作成
+    4. clientInfo用のstore作成・登録
+    5. ClientInfo.vueに処理を追加
 
 ### 参考サイト
 - [vue-dev-tools](https://qiita.com/hashimoto-1202/items/c81f5d4c271eef16d957)
